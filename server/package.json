@@ -1,20 +1,25 @@
 {
-  "name": "server",
+  "name": "youtube_scrap_server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "server and api for youtube summary scrapper",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon src/server.ts"
+    "start": "pnpm build && node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "build": "tsc -b"
   },
   "keywords": [],
-  "author": "",
+  "author": "vasa",
   "license": "ISC",
   "packageManager": "pnpm@10.7.0",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "pg": "^8.14.1",
+    "typeorm": "^0.3.21",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
