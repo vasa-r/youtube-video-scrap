@@ -4,6 +4,7 @@ import { verificationEmailTemplate } from "../templates/emails/verification-temp
 import { AppError } from "../utils/error";
 import { statusCode } from "../types/types";
 import logger from "../logger/logger";
+import { welcomeEmailTemplate } from "../templates/emails/welcome-template";
 
 export class EmailService {
   private static readonly resend = new Resend(envConfig.resend.apiKey);
@@ -32,6 +33,30 @@ export class EmailService {
       throw new AppError(
         statusCode.SERVER_ERROR,
         "Failed to send verification email"
+      );
+    }
+  }
+
+  static async sendWelcomeEmail(email: string, userName: string) {
+    try {
+      const { error } = await this.resend.emails.send({
+        from: this.FROM_EMAIL,
+        to: email,
+        subject: "Welcome aboard",
+        html: welcomeEmailTemplate(userName ?? "User"),
+      });
+
+      if (error) {
+        throw new AppError(
+          statusCode.SERVER_ERROR,
+          "Failed to send welcome email"
+        );
+      }
+    } catch (error) {
+      logger.error(`Error sending email: ${error}`);
+      throw new AppError(
+        statusCode.SERVER_ERROR,
+        "Failed to send welcome email"
       );
     }
   }

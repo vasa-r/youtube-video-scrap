@@ -234,7 +234,7 @@ export const baseEmailTemplate = (content: EmailTemplateContent): string => {
               <div class="social-links">
                 <a href="#" class="social-link">Twitter</a>
                 <a href="#" class="social-link">LinkedIn</a>
-                <a href="#" class="social-link">GitHub</a>
+                <a href="https://github.com/vasa-r" class="social-link">GitHub</a>
               </div>
             </div>
           </div>
