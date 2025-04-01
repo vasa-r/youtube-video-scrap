@@ -1,3 +1,5 @@
+import { User } from "../entities/user-entity";
+
 export enum statusCode {
   OK = 200,
   CREATED = 201,
@@ -15,4 +17,16 @@ export enum statusCode {
   BAD_GATEWAY = 502,
   UNAVAILABLE = 503,
   TIMEOUT = 504,
+}
+
+export interface EmailTemplateContent {
+  title: string;
+  body: string;
+  buttonText?: string;
+  buttonUrl?: string;
+}
+
+export interface RegisterResponse {
+  user: User;
+  token: string;
 }

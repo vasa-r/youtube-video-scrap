@@ -36,7 +36,7 @@ export class User {
   })
   emailVerificationTokenExpires: Date | null;
 
-  @Column({ nullable: true, name: "last_login" })
+  @Column({ nullable: true, name: "last_login", type: "timestamp" })
   lastLogin: Date | null;
 
   @CreateDateColumn({ name: "created_at" })

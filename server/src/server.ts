@@ -46,7 +46,7 @@ app.get("/", (_, res) => {
   res.status(statusCode.OK).json(successRes("Yo! Your API is up N running"));
 });
 
-app.use("api/v1", v1);
+app.use("/api/v1", v1);
 
 app.use("*", (req, res) => {
   res.status(statusCode.NOT_FOUND).json({

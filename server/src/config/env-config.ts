@@ -5,17 +5,20 @@ export const envConfig = {
     port: getEnv("PORT", "8000"),
     env: getEnv("NODE_ENV", "development"),
   },
+  client: {
+    url: getEnv("FRONTEND_URL"),
+  },
   database: {
     url: getEnv(
       "DATABASE_URL",
       "postgres://postgres:postgres@localhost:5432/video_summarizer"
     ),
   },
-  //   jwt: {
-  //     secret: getEnv("JWT_SECRET"),
-  //     expiresIn: getEnv("JWT_EXPIRES_IN", "1h"),
-  //   },
-  //   thirdParty: {
-  //     googleApiKey: getEnv("GOOGLE_API_KEY"),
-  //   },
+  jwt: {
+    secret: getEnv("JWT_SECRET", "secret"),
+    expiresIn: getEnv("JWT_EXPIRES_IN", "24h"),
+  },
+  resend: {
+    apiKey: getEnv("RESEND_API_KEY"),
+  },
 };
