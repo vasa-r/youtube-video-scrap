@@ -14,6 +14,7 @@ import { statusCode } from "./types/types";
 
 // Middlewares
 import errorHandler from "./middleware/error-handler";
+import applySecurity from "./middleware/security-headers";
 
 // Routes
 import v1 from "./routes/v1-route";
@@ -35,6 +36,7 @@ const initServer = async () => {
 };
 
 app.use(cors());
+app.use(applySecurity);
 app.use(express.json());
 app.use(
   morgan(envConfig.server.env === "development" ? "dev" : "combined", {

@@ -4,6 +4,7 @@ export const envConfig = {
   server: {
     port: getEnv("PORT", "8000"),
     env: getEnv("NODE_ENV", "development"),
+    allowedOrigins: [""],
   },
   client: {
     url: getEnv("FRONTEND_URL"),

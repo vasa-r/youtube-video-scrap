@@ -4,12 +4,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import * as bcrypt from "bcryptjs";
+import { Video } from "./video-entity";
 
-@Entity()
+@Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -38,6 +40,9 @@ export class User {
 
   @Column({ nullable: true, name: "last_login", type: "timestamp" })
   lastLogin: Date | null;
+
+  @OneToMany(() => Video, (video) => video.user)
+  videos: Video[];
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
