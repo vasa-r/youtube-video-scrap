@@ -2,10 +2,10 @@ import { AppDataSource } from "../config/db";
 import { envConfig } from "../config/env-config";
 import { User } from "../entities/user-entity";
 import logger from "../logger/logger";
-import { statusCode } from "../types/types";
+import { JwtPayloadWithUser, statusCode } from "../types/types";
 import { AppError } from "../utils/error";
 import crypto from "crypto";
-import jwt, { Secret, SignOptions } from "jsonwebtoken";
+import jwt, { JsonWebTokenError, Secret, SignOptions } from "jsonwebtoken";
 import { EmailService } from "./email-service";
 
 export class AuthService {
@@ -131,5 +131,23 @@ export class AuthService {
       this.JWT_SECRET,
       { expiresIn: this.JWT_EXPIRES_IN }
     );
+  }
+
+  // verify token
+  static verifyValidToken(token: string) {
+    try {
+      const decoded = jwt.verify(token, this.JWT_SECRET) as JwtPayloadWithUser;
+      return decoded;
+    } catch (error) {
+      if (error instanceof JsonWebTokenError) {
+        if (error.message.includes("jwt expired")) {
+          throw new AppError(
+            statusCode.UNAUTHORIZED,
+            "Session expired. Login again"
+          );
+        }
+      }
+      throw new AppError(statusCode.UNAUTHORIZED, "UNAUTHORIZED");
+    }
   }
 }

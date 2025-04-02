@@ -1,0 +1,5 @@
+ignoredBuiltDependencies:
+  - es5-ext
+onlyBuiltDependencies:
+  - '@ffmpeg-installer/darwin-x64'
+  - youtube-dl-exec

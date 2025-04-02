@@ -1,3 +1,4 @@
+import { JwtPayload } from "jsonwebtoken";
 import { User } from "../entities/user-entity";
 
 export enum statusCode {
@@ -29,4 +30,28 @@ export interface EmailTemplateContent {
 export interface RegisterResponse {
   user: User;
   token: string;
+}
+
+export interface VideoInfo {
+  title: string;
+  description?: string;
+  duration: number;
+  author: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+  audioPath?: string;
+}
+
+export type YoutubeDLOutput = {
+  title: string;
+  description?: string;
+  duration: number;
+  uploader: string;
+  thumbnail: string;
+} & Record<string, unknown>;
+
+export interface JwtPayloadWithUser extends JwtPayload {
+  userId: string;
+  userEmail: string;
+  userName: string;
 }
