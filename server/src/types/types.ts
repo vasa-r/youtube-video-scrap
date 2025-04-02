@@ -55,3 +55,9 @@ export interface JwtPayloadWithUser extends JwtPayload {
   userEmail: string;
   userName: string;
 }
+
+export interface TranscriptionResult {
+  text: string;
+  confidence: number;
+  isMusic?: boolean;
+}
