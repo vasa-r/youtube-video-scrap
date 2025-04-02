@@ -4,10 +4,13 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./user-entity";
+import { Transcription } from "./transcription-entity";
+import { Analysis } from "./analysis-entity";
 
 @Entity({ name: "videos" })
 export class Video {
@@ -44,6 +47,12 @@ export class Video {
     onDelete: "CASCADE",
   })
   user: User;
+
+  @OneToOne(() => Transcription, (transcription) => transcription.video)
+  transcription: Transcription;
+
+  @OneToOne(() => Analysis, (analysis) => analysis.video)
+  analysis: Analysis;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
