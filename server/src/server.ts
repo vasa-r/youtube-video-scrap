@@ -2,6 +2,9 @@ import express from "express";
 import "dotenv/config";
 import morgan from "morgan";
 import cors from "cors";
+import { createBullBoard } from "@bull-board/api";
+import { BullAdapter } from "@bull-board/api/bullAdapter";
+import { ExpressAdapter } from "@bull-board/express";
 
 // Configuration & Logging
 import { envConfig } from "./config/env-config";
@@ -18,13 +21,35 @@ import applySecurity from "./middleware/security-headers";
 
 // Routes
 import v1 from "./routes/v1-route";
+import { JobService } from "./services/jobs-services";
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = envConfig.server.port || 8000;
+const adminPort = envConfig.server.adminPort || 8081;
 
 const initServer = async () => {
   try {
     await connectDb();
+
+    await JobService.initialize();
+    logger.info("Job service initialized");
+
+    // init bull board
+    const serverAdapter = new ExpressAdapter();
+    const adminApp = express();
+
+    createBullBoard({
+      queues: [new BullAdapter(JobService.getTranscriptionQueue())],
+      serverAdapter,
+    });
+
+    adminApp.use(cors());
+    serverAdapter.setBasePath("/admin/queues");
+    adminApp.use("/admin/queues", serverAdapter.getRouter());
+
+    adminApp.listen(adminPort, () => {
+      logger.info(`Admin server starts at port: ${adminPort}`);
+    });
 
     app.listen(PORT, () => {
       logger.info(`Server is up and running on port: ${PORT}`);

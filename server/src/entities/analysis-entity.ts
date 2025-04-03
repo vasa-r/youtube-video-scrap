@@ -14,7 +14,7 @@ export class Analysis {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "string" })
+  @Column({ type: "text" })
   summary: string;
 
   @Column({ type: "text", array: true })

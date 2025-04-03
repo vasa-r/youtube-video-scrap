@@ -6,5 +6,6 @@ const videoRouter = Router();
 
 videoRouter.post("/info", validateYtUrl, VideoController.getVideoInfo);
 videoRouter.post("/audio", validateYtUrl, VideoController.downloadAudio);
+videoRouter.post("/transcribe", validateYtUrl, VideoController.transcribeVideo);
 
 export default videoRouter;

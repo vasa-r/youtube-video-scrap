@@ -2,5 +2,6 @@ ignoredBuiltDependencies:
   - es5-ext
 onlyBuiltDependencies:
   - '@ffmpeg-installer/darwin-x64'
+  - msgpackr-extract
   - protobufjs
   - youtube-dl-exec

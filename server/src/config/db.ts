@@ -3,12 +3,14 @@ import { envConfig } from "./env-config";
 import logger from "../logger/logger";
 import { User } from "../entities/user-entity";
 import { Video } from "../entities/video-entity";
+import { Transcription } from "../entities/transcription-entity";
+import { Analysis } from "../entities/analysis-entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
   url: envConfig.database.url,
   synchronize: envConfig.server.env === "development",
-  entities: [User, Video],
+  entities: [User, Video, Transcription, Analysis],
   migrations: [],
   subscribers: [],
 });

@@ -61,3 +61,17 @@ export interface TranscriptionResult {
   confidence: number;
   isMusic?: boolean;
 }
+
+export interface TranscriptionJob {
+  url: string;
+  videoInfo?: any;
+  userId: string;
+}
+
+export interface AiAnalysis {
+  summary: string;
+  keyPoints: string[];
+  sentiment: "positive" | "negative" | "neutral";
+  topics: string[];
+  suggestedTags: string[];
+}
