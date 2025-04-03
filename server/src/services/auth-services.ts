@@ -150,4 +150,16 @@ export class AuthService {
       throw new AppError(statusCode.UNAUTHORIZED, "UNAUTHORIZED");
     }
   }
+
+  static async getUserById(userId: string): Promise<User> {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: ["videos"],
+    });
+    if (!user) {
+      throw new AppError(statusCode.NOT_FOUND, "No user found");
+    }
+
+    return user;
+  }
 }
