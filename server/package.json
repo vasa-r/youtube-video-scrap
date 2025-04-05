@@ -16,6 +16,7 @@
   "dependencies": {
     "@bull-board/api": "^6.7.10",
     "@bull-board/express": "^6.7.10",
+    "@deepgram/sdk": "^3.11.3",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@google-cloud/speech": "^7.0.1",
     "@google-cloud/storage": "^7.16.0",

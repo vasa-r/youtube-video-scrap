@@ -11,6 +11,7 @@ import { unlink } from "fs/promises";
 import { GeminiService } from "./gemini-service";
 import { ApiError } from "@google-cloud/storage";
 import logger from "../logger/logger";
+import { Deepgram } from "./deepgram-service";
 
 export class JobService {
   private static transcriptQueue: Queue.Queue;
@@ -84,9 +85,8 @@ export class JobService {
         audioPath = await VideoService.downloadAudio(url);
         job.progress(40);
 
-        const transcriptionResult = await TranscriptionService.transcribe(
-          audioPath
-        );
+        const transcriptionResult = await Deepgram.transcribe(audioPath);
+        job.progress(55);
         let transcription = await this.transcriptionRepo.findOne({
           where: { video: { id: video.id } },
         });

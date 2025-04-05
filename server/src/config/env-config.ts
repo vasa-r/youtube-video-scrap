@@ -30,4 +30,7 @@ export const envConfig = {
     host: getEnv("REDIS_HOST", "localhost"),
     port: parseInt(getEnv("REDIS_PORT", "6379")),
   },
+  deepgram: {
+    apiKey: getEnv("DEEPGRAM_API_KEY"),
+  },
 };
