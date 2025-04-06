@@ -9,7 +9,8 @@ const youtubeUrlSchema = z
   .refine(
     (url) => {
       const youtubeRegex =
-        /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?:\S+)?$/;
+        /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?:\S+)?$/;
+
       return youtubeRegex.test(url);
     },
     { message: "Invalid YouTube URL format" }

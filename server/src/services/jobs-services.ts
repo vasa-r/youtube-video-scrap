@@ -95,12 +95,14 @@ export class JobService {
           transcription.confidence = transcriptionResult.confidence;
           transcription.isMusic = transcriptionResult.isMusic || false;
           transcription.audioPath = audioPath;
+          transcription.video = video;
         } else {
           transcription = new Transcription();
           transcription.text = transcriptionResult.text;
           transcription.confidence = transcriptionResult.confidence;
           transcription.isMusic = transcriptionResult.isMusic || false;
           transcription.audioPath = audioPath;
+          transcription.video = video;
         }
 
         await this.transcriptionRepo.save(transcription);
@@ -121,7 +123,7 @@ export class JobService {
         }
 
         // ai analysis
-        const analysisResult = GeminiService.analyzeTranscription(
+        const analysisResult = await GeminiService.analyzeTranscription(
           transcription.text,
           videoInfo
         );

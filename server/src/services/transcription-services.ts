@@ -5,7 +5,11 @@ import { AppError } from "../utils/error";
 import { statusCode, TranscriptionResult } from "../types/types";
 import path from "path";
 import ffmpeg from "fluent-ffmpeg";
+import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
 import { unlink } from "fs/promises";
+import fs from "fs";
+
+ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
 export class TranscriptionService {
   private static readonly BUCKET_NAME = "youtube-video-summarizer-audio";
@@ -73,6 +77,10 @@ export class TranscriptionService {
   }
 
   static async convertToWav(inputPath: string): Promise<string> {
+    if (!fs.existsSync(inputPath)) {
+      throw new AppError(statusCode.BAD_REQUEST, "Input file does not exist");
+    }
+
     const outputPath = path.join(
       path.dirname(inputPath),
       `${path.basename(inputPath, path.extname(inputPath))}.wav`
@@ -89,19 +97,25 @@ export class TranscriptionService {
           "loudnorm=I=-16:LRA=11:TP=-1.5",
           "aformat=channel_layouts=mono",
         ])
+        .outputOptions(["-acodec pcm_s16le", "-ac 1", "-ar 16000"])
+        .on("start", (commandLine) => {
+          logger.info(`FFmpeg process started: `, commandLine);
+        })
         .on("end", () => {
           logger.info(`Audio converted to WAV: ${outputPath}`);
           resolve(outputPath);
         })
         .on("error", (err) => {
           logger.error(`Error converting audio to WAV: ${err.message}`);
+          console.log(err);
           reject(
             new AppError(
               statusCode.SERVER_ERROR,
               "Failed to convert audio to wav"
             )
           );
-        });
+        })
+        .save(outputPath);
     });
   }
 

@@ -14,7 +14,7 @@ export class Deepgram {
 
   static async transcribe(audioPath: string): Promise<TranscriptionResult> {
     let wavPath: string | undefined;
-    console.log("transcribe started");
+
     try {
       if (!audioPath) {
         throw new AppError(statusCode.BAD_REQUEST, "No audio file provider");

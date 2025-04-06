@@ -12,10 +12,10 @@ IMPORTANT: Your response must be valid JSON and match this exact structure:
   "keyPoints": ["point 1", "point 2", "etc"],
   "sentiment": "positive|negative|neutral",
   "topics": ["topic1", "topic2", "etc"],
-  "suggestedTags": ["#tag1", "#tag2", "etc"]
+  "tags": ["#tag1", "#tag2", "etc"]
 }
 
-DO NOT include any text outside the JSON structure. Your response should be parseable by JSON.parse().
+DO NOT include any text outside the JSON structure. Your response should be parsable by JSON.parse().
 
 Analyze this transcription:
 """

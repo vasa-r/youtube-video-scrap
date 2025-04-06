@@ -73,5 +73,5 @@ export interface AiAnalysis {
   keyPoints: string[];
   sentiment: "positive" | "negative" | "neutral";
   topics: string[];
-  suggestedTags: string[];
+  tags: string[];
 }

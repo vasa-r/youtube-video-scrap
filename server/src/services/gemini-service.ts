@@ -12,7 +12,7 @@ export class GeminiService {
     envConfig.gemini.apiKey
   );
   private static readonly model = GeminiService.genAI.getGenerativeModel({
-    model: "gemini-pro", //gemini-2.0-flash
+    model: "gemini-2.0-flash", //gemini-2.0-flash
   });
 
   private static generatePrompt(
@@ -65,7 +65,7 @@ export class GeminiService {
         keyPoints: analysis.keyPoints || [],
         sentiment: analysis.sentiment as "positive" | "negative" | "neutral",
         topics: analysis.topics || [],
-        suggestedTags: analysis.suggestedTags || [],
+        tags: analysis.tags || [],
       };
     } catch (error) {
       throw new AppError(statusCode.BAD_REQUEST, "Invalid response format");
