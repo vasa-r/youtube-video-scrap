@@ -13,6 +13,27 @@ export class VideoService {
   private static readonly AUDIO_DIR = path.join(process.cwd(), "temp", "audio");
   private static readonly videoRepo = AppDataSource.getRepository(Video);
 
+  static async getUserVideos(userId: string): Promise<Video[]> {
+    return this.videoRepo.find({
+      where: { user: { id: userId } },
+      relations: ["transcription", "analysis"],
+      order: { createdAt: "DESC" },
+    });
+  }
+
+  static async getVideoById(id: string, userId: string): Promise<Video | null> {
+    const video = await this.videoRepo.findOne({
+      where: { id, user: { id: userId } },
+      relations: ["transcription", "analysis"],
+    });
+
+    if (!video) {
+      throw new AppError(statusCode.NOT_FOUND, "Video not found");
+    }
+
+    return video;
+  }
+
   static async ensureDirectoryExists() {
     await mkdir(VideoService.AUDIO_DIR, { recursive: true });
   }

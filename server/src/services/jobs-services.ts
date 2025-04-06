@@ -4,14 +4,14 @@ import { Video } from "../entities/video-entity";
 import { Transcription } from "../entities/transcription-entity";
 import { Analysis } from "../entities/analysis-entity";
 import { User } from "../entities/user-entity";
-import { TranscriptionJob, VideoInfo } from "../types/types";
+import { statusCode, TranscriptionJob, VideoInfo } from "../types/types";
 import { VideoService } from "./video-services";
-import { TranscriptionService } from "./transcription-services";
 import { unlink } from "fs/promises";
 import { GeminiService } from "./gemini-service";
-import { ApiError } from "@google-cloud/storage";
 import logger from "../logger/logger";
 import { Deepgram } from "./deepgram-service";
+import { AppError } from "../utils/error";
+import { ApiError } from "@google-cloud/storage";
 
 export class JobService {
   private static transcriptQueue: Queue.Queue;
@@ -236,5 +236,114 @@ export class JobService {
     });
 
     return { jobId: job.id };
+  }
+
+  static async getJobStatus(jobId: string) {
+    const job = await this.transcriptQueue.getJob(jobId);
+
+    if (!job) {
+      throw new AppError(statusCode.NOT_FOUND, "Job not found");
+    }
+
+    const state = await job.getState();
+    const progress = await job.progress();
+    const result = job.returnvalue;
+    const failedReason = job.failedReason;
+    const attempts = job.attemptsMade;
+
+    let videoStatus = null;
+    if (result?.videoInfo?.url) {
+      const video = await this.videoRepo.findOne({
+        where: { url: result.videoInfo.url },
+        relations: ["transcription", "analysis"],
+      });
+      if (video) {
+        videoStatus = {
+          id: video.id,
+          status: video.status,
+          hasTranscription: !!video.transcription,
+          hasAnalysis: !!video.analysis,
+        };
+      }
+    }
+
+    return {
+      id: job.id,
+      state,
+      progress,
+      result,
+      failedReason,
+      attempts,
+      videoStatus,
+      final: result?.final || state === "completed" || attempts >= 3,
+    };
+  }
+
+  static async getAllJobs(userId: string) {
+    const activeJobs = await this.transcriptQueue.getActive();
+    const waitingJobs = await this.transcriptQueue.getWaiting();
+    const completedJobs = await this.transcriptQueue.getCompleted();
+    const delayedJobs = await this.transcriptQueue.getDelayed();
+    const failedJobs = await this.transcriptQueue.getFailed();
+
+    const jobs = [
+      ...activeJobs,
+      ...waitingJobs,
+      ...completedJobs,
+      ...delayedJobs,
+      ...failedJobs,
+    ];
+
+    const userJobs = jobs.filter((job) => {
+      console.log(job.data.userId);
+      return job.data.userId === userId;
+    });
+
+    userJobs.sort((a, b) => a.timestamp - b.timestamp);
+
+    const jobDetails = await Promise.all(
+      userJobs.map(async (job) => {
+        const state = await job.getState();
+
+        return {
+          id: job.id,
+          state,
+          data: job.data,
+          timestamp: job.timestamp,
+          processedOn: job.processedOn,
+          finishedOn: job.finishedOn,
+          attemptsMade: job.attemptsMade,
+          result: job.returnvalue,
+          failedReason: job.failedReason,
+          videoStatus: job.data?.url
+            ? await this.getVideoStatus(job.data.url)
+            : null,
+        };
+      })
+    );
+
+    return jobDetails;
+  }
+
+  private static async getVideoStatus(url: string) {
+    const video = await this.videoRepo.findOne({
+      where: { url: url },
+      select: ["id", "status", "title", "thumbnail"],
+      relations: ["transcription", "analysis"],
+    });
+
+    if (!video) {
+      logger.warn(`Video not found for url: ${url}`);
+      return null;
+    }
+
+    return {
+      id: video.id,
+      status: video.status,
+      hasTranscription: !!video.transcription,
+      hasAnalysis: !!video.analysis,
+      title: video.title,
+      thumbnail: video.thumbnail,
+    };
   }
 }
