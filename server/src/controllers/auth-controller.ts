@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/auth-services";
-import { RegisterResponse, statusCode } from "../types/types";
+import {
+  JwtPayloadWithUser,
+  RegisterResponse,
+  statusCode,
+} from "../types/types";
 import { successRes } from "../utils/response-format";
 import { User } from "../entities/user-entity";
 import { AppError } from "../utils/error";
@@ -72,6 +76,19 @@ export class AuthController {
       res
         .status(statusCode.OK)
         .json(successRes("Verification Email sent to your Mail Address"));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getProfile(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = (req as Request & JwtPayloadWithUser).user!;
+      const user = await AuthService.getUserById(userId);
+
+      res
+        .status(statusCode.OK)
+        .json(successRes("Profile fetched successfully", user));
     } catch (error) {
       next(error);
     }

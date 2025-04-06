@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth-controller";
+import verifyToken from "../middleware/verify-token";
 
 const authRouter = Router();
 
@@ -10,5 +11,6 @@ authRouter.post(
   "/resend-verification-email",
   AuthController.resendVerificationEmail
 );
+authRouter.get("/me", verifyToken, AuthController.getProfile);
 
 export default authRouter;

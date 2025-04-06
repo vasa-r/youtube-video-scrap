@@ -154,6 +154,17 @@ export class AuthService {
   static async getUserById(userId: string): Promise<User> {
     const user = await this.userRepo.findOne({
       where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        userName: true,
+        isEmailVerified: true,
+        emailVerificationToken: true,
+        emailVerificationTokenExpires: true,
+        lastLogin: true,
+        createdAt: true,
+        updatedAt: true,
+      },
       relations: ["videos"],
     });
     if (!user) {
