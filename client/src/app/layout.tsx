@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Merienda, Codystar } from "next/font/google";
 import "./globals.css";
 import { ClientProviders } from "@/context/client-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppinsFont = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["100", "200", "400", "500", "600", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const codystartFont = Codystar({
+  variable: "--font-codystar",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppinsFont.variable} ${codystartFont.variable}  antialiased`}
       >
         <ClientProviders>{children}</ClientProviders>
         <Toaster richColors />
