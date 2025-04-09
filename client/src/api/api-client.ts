@@ -29,10 +29,10 @@ apiClient.interceptors.response.use(
     return response;
   },
   (err) => {
-    console.error("Response error:", err);
+    // console.error("Response error:", err);
     if (err.response?.status === 401) {
       localStorage.removeItem("tubescribe_token");
-      window.location.href = "/auth/login";
+      window.location.href = "/auth/signin";
     }
     return Promise.reject(err);
   }

@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import {
   Form,
@@ -17,8 +16,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/schema/zod-schema";
 import BtnLoader from "../loader";
+import ErrorAlert from "./error-alert";
+import { useState } from "react";
+import { useRegister } from "@/queries/auth";
+import { RegisterType } from "@/types/types";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export function SignupForm({ className }: React.ComponentProps<"form">) {
+  const register = useRegister();
+  const [error, setError] = useState("");
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -29,7 +36,24 @@ export function SignupForm({ className }: React.ComponentProps<"form">) {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async ({ userName, email, password }: RegisterType) => {
+    try {
+      await register.mutateAsync({
+        userName,
+        email,
+        password,
+      });
+      toast.success("Please check email and verify.");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMessage =
+          error.response?.data?.message || "Something went wrong. Try again.";
+        setError(errorMessage);
+        return;
+      }
+      setError("Something went wrong. Please try again later.");
+    }
+  };
   return (
     <Form {...form}>
       <form
@@ -43,6 +67,7 @@ export function SignupForm({ className }: React.ComponentProps<"form">) {
             Enter required details to get started
           </p>
         </div>
+        {error && <ErrorAlert error={error} />}
         <div className="grid gap-6">
           <FormField
             control={form.control}
@@ -106,10 +131,10 @@ export function SignupForm({ className }: React.ComponentProps<"form">) {
           />
           <Button
             type="submit"
-            disabled={form.formState.isSubmitting}
+            disabled={register.isPending}
             className="w-full text-lg"
           >
-            {form.formState.isSubmitting ? <BtnLoader /> : "Sign Up"}
+            {register.isPending ? <BtnLoader /> : "Register"}
           </Button>
         </div>
         <div className="text-center text-sm">

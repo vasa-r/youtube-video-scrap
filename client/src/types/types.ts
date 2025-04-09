@@ -1,14 +1,14 @@
 import { registerSchema, loginSchema } from "@/schema/zod-schema";
 import { z } from "zod";
 export interface User {
-  id: number;
+  id: string;
   email: string;
-  name: string;
+  userName: string;
   isEmailVerified: boolean;
-  lastLoginAt: string;
-  createdAt: string;
-  updatedAt: string;
+  lastLoginAt: string | Date | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export type loginType = z.infer<typeof loginSchema>;
-export type registerType = z.infer<typeof registerSchema>;
+export type LoginType = z.infer<typeof loginSchema>;
+export type RegisterType = z.infer<typeof registerSchema>;

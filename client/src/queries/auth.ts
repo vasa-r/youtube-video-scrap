@@ -19,6 +19,7 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: (data: any) => authApi.register(data),
     onSuccess: (data) => {
+      console.log({ data });
       login(data.token, data.user);
     },
   });

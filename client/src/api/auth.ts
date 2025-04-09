@@ -4,13 +4,13 @@ export const authApi = {
   login: async (data: any) => {
     const response = await apiClient.post("/auth/login", data);
     console.log({ response });
-    return response.data;
+    return response.data.data;
   },
 
   register: async (data: any) => {
     const response = await apiClient.post("/auth/register", data);
     console.log({ response });
-    return response.data;
+    return response.data.data;
   },
 
   getCurrentUser: async () => {

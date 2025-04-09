@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import {
   Form,
@@ -17,8 +16,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schema/zod-schema";
 import BtnLoader from "../loader";
+import ErrorAlert from "./error-alert";
+import { useState } from "react";
+import { LoginType } from "@/types/types";
+import { useLogin } from "@/queries/auth";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export function SigninForm({ className }: React.ComponentProps<"form">) {
+  const login = useLogin();
+  const [error, setError] = useState<string | null>("");
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -27,7 +34,25 @@ export function SigninForm({ className }: React.ComponentProps<"form">) {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async ({ email, password }: LoginType) => {
+    try {
+      setError(null);
+      await login.mutateAsync({
+        email,
+        password,
+      });
+      toast.success("Welcome back.");
+    } catch (error) {
+      console.log({ error });
+      if (error instanceof AxiosError) {
+        const errorMessage =
+          error.response?.data?.message || "Something went wrong. Try again.";
+        setError(errorMessage);
+        return;
+      }
+      setError("Something went wrong. Please try again later.");
+    }
+  };
   return (
     <Form {...form}>
       <form
@@ -43,6 +68,7 @@ export function SigninForm({ className }: React.ComponentProps<"form">) {
             Enter your email below to login to your account
           </p>
         </div>
+        {error && <ErrorAlert error={error} />}
         <div className="grid gap-6">
           <FormField
             control={form.control}
@@ -76,10 +102,10 @@ export function SigninForm({ className }: React.ComponentProps<"form">) {
           />
           <Button
             type="submit"
-            disabled={form.formState.isSubmitting}
+            disabled={login.isPending}
             className="w-full text-lg"
           >
-            {form.formState.isSubmitting ? <BtnLoader /> : "Login"}
+            {login.isPending ? <BtnLoader /> : "Login"}
           </Button>
         </div>
         <div className="text-center text-sm">
