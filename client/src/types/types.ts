@@ -1,4 +1,4 @@
-import { registerSchema, loginSchema } from "@/schema/zod-schema";
+import { registerSchema, loginSchema, urlSchema } from "@/schema/zod-schema";
 import { z } from "zod";
 export interface User {
   id: string;
@@ -12,3 +12,4 @@ export interface User {
 
 export type LoginType = z.infer<typeof loginSchema>;
 export type RegisterType = z.infer<typeof registerSchema>;
+export type URLType = z.infer<typeof urlSchema>;

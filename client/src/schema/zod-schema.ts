@@ -22,3 +22,19 @@ export const loginSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters" }),
 });
+
+export const urlSchema = z.object({
+  url: z
+    .string()
+    .url({ message: "Must be a valid URL" })
+    .refine(
+      (url) => {
+        const youtubeRegex =
+          /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?:\S+)?$/;
+        return youtubeRegex.test(url);
+      },
+      {
+        message: "Invalid YouTube URL format",
+      }
+    ),
+});

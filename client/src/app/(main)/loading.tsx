@@ -1,7 +1,7 @@
 import PageLoader from "@/components/page-loader";
 import React from "react";
 
-const loading = () => {
+const MainLoading = () => {
   return (
     <div className="h-screen w-screen flex justify-center items-center">
       <PageLoader />
@@ -9,4 +9,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default MainLoading;

@@ -126,3 +126,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.center {
+  @apply flex items-center justify-center;
+}
