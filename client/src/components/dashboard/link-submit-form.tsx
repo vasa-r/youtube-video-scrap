@@ -31,7 +31,7 @@ const LinkForm = () => {
   const queryClient = useQueryClient();
 
   const startProcessing = useMutation({
-    mutationFn: videoApi.processVideo,
+    mutationFn: (data: URLType) => videoApi.processVideo(data),
     onSuccess: (data) => {
       toast.success("Video submitted for processing. chill out.", {
         description: data.videoInfo.title,
