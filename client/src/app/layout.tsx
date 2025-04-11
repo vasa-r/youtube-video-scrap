@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Poppins, Merienda, Codystar } from "next/font/google";
-import "./globals.css";
+import { Poppins, Codystar } from "next/font/google";
+import "@/styles/globals.css";
 import { ClientProviders } from "@/context/client-provider";
 import { Toaster } from "@/components/ui/sonner";
 

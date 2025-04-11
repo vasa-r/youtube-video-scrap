@@ -14,6 +14,7 @@ export const videoApi = {
   },
   getAllJobs: async () => {
     const response = await apiClient.get("/video/jobs");
+    console.log({ response });
 
     return response.data.data;
   },

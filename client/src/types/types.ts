@@ -29,6 +29,8 @@ export interface VideoStatus {
   status: string;
   hasTranscription: boolean;
   hasAnalysis: boolean;
+  thumbnail: string;
+  title: string;
 }
 
 export interface JobsListResponse {
@@ -65,31 +67,42 @@ export interface Video {
   analysis: VideoAnalysis | null;
 }
 
+interface Transcription {
+  confidence: number;
+  isMusic: boolean;
+  text: string;
+}
+
+interface Analytics {
+  keyPoints: string[];
+  sentiment: string;
+  summary: string;
+  tags: string[];
+  topics: string[];
+}
+
+interface JobStatusResultType {
+  videInfo?: VideoInfo;
+  transcription?: Transcription;
+  analytics?: Analytics;
+  status: string;
+}
+
 export interface JobStatus {
   id: string;
-  state: "waiting" | "active" | "completed" | "failed" | "delayed";
+  state: "completed" | "waiting" | "active" | "delayed" | "failed" | "paused";
   progress: number;
-  result?: {
-    videoInfo?: VideoInfo;
-    transcription?: {
-      text: string;
-      segments: Array<{
-        start: number;
-        end: number;
-        text: string;
-      }>;
-    };
-    analysis?: {
-      summary: string;
-      keyPoints: string[];
-      topics: string[];
-      suggestedTags: string[];
-    };
-    error?: string;
-    final?: boolean;
+  data: {
+    url: string;
+    userId: string;
+    videoInfo: VideoInfo;
   };
-  failedReason?: string;
+  timestamp: number;
+  processedOn: number;
+  finishedOn: number;
   attemptsMade: number;
-  videoStatus?: VideoStatus;
-  final: boolean;
+  result?: JobStatusResultType | null;
+  failedReason?: string | null;
+  videoStatus?: VideoStatus | null;
+  final?: boolean;
 }

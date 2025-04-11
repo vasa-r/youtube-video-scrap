@@ -1,12 +1,12 @@
 import { videoApi } from "@/api/video";
-import { useQuery, useQueryErrorResetBoundary } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { JobStatus, Video } from "@/types/types";
 
 export const useAllJobs = () => {
-  return useQuery({
+  return useQuery<JobStatus[]>({
     queryKey: ["jobs"],
     queryFn: videoApi.getAllJobs,
-    refetchInterval: 5000, // just polling for 5 sec to check new jobs
+    // refetchInterval: 5000, // just polling for 5 sec to check new jobs
   });
 };
 

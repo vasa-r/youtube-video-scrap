@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  History,
-  LayoutDashboard,
-  Play,
-  Table,
-  User2,
-  Video,
-} from "lucide-react";
+import { Film, History, User2, Video } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
@@ -28,19 +21,19 @@ const data = {
     {
       title: "New Video",
       description: "Upload new video to be processed",
-      url: "/dashboard",
+      url: "/dashboard/create",
       icon: Video,
     },
     {
       title: "My Videos",
       description: "Your uploaded videos",
-      url: "/videos",
-      icon: Play,
+      url: "/dashboard/videos",
+      icon: Film,
     },
     {
-      title: "Processing",
+      title: "History",
       description: "Your video processing history",
-      url: "/processing",
+      url: "/dashboard/history",
       icon: History,
     },
     {

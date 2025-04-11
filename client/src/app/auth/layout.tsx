@@ -10,7 +10,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (user) {
-      router.push("/dashboard");
+      router.push("/dashboard/create");
     }
   }, [user, router]);
   return <div>{children}</div>;

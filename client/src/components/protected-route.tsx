@@ -16,7 +16,7 @@ export default function ProtectedRoute({
     const token = localStorage.getItem("tubescribe_token");
 
     if (!token) {
-      router.push("/auth/signin");
+      router.push("/auth/signin?redirected=true");
     } else {
       setLoading(false);
     }

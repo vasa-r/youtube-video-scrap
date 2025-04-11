@@ -3,7 +3,7 @@ import TooltipWrapper from "@/components/tooltip-wrapper";
 import { TriangleAlert } from "lucide-react";
 import React from "react";
 
-const Dashboard = () => {
+const CreateVideoProcess = () => {
   return (
     <div className="space-y-2 p-5 flex flex-col h-full">
       <div className="flex items-center gap-2">
@@ -27,4 +27,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CreateVideoProcess;
