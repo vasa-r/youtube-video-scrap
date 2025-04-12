@@ -13,14 +13,16 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <ProtectedRoute>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <MainHeader />
-          <main className="flex-1"> {children}</main>
-        </SidebarInset>
-      </SidebarProvider>
-    </ProtectedRoute>
+    <div className="h-screen flex overflow-hidden">
+      <ProtectedRoute>
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <MainHeader />
+            <main className="flex-1 overflow-y-auto"> {children}</main>
+          </SidebarInset>
+        </SidebarProvider>
+      </ProtectedRoute>
+    </div>
   );
 }

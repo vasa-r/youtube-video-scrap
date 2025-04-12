@@ -52,7 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar
       collapsible={isMobile ? "offcanvas" : "none"}
       {...props}
-      className="h-screen"
+      className="h-screen overflow-hidden"
     >
       <SidebarHeader>
         <TeamSwitcher />

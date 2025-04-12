@@ -82,7 +82,7 @@ interface Analytics {
 }
 
 interface JobStatusResultType {
-  videInfo?: VideoInfo;
+  videoInfo?: VideoInfo;
   transcription?: Transcription;
   analytics?: Analytics;
   status: string;

@@ -6,6 +6,14 @@ import ErrorView from "@/components/main/error-view";
 import HistoryLoading from "@/components/history/history-loading";
 import NoDataFallback from "@/components/main/nodata-fallback";
 import HistoryVideoCard from "./history-video-card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Card } from "../ui/card";
 
 const AllJobs = () => {
   const [filter, setFilter] = useState<string>("all");
@@ -37,10 +45,32 @@ const AllJobs = () => {
     );
   }
 
+  const filteredJobs = jobs.filter((job) => {
+    if (filter === "all") return true;
+    if (filter === "active") {
+      return job.state === "active" || job.state === "waiting";
+    }
+    return job.state === filter;
+  });
+
   return (
-    <div className="w-full h-full space-y-2">
-      {jobs.map((job) => (
-        <HistoryVideoCard key={job.id} {...job} />
+    <div className="w-full h-full space-y-2.5 overflow-y-auto scroll-smooth">
+      <div className="mb-4">
+        <Select value={filter} onValueChange={setFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter by status" defaultValue="all" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Jobs</SelectItem>
+            <SelectItem value="active">Active Jobs</SelectItem>
+            <SelectItem value="completed">Completed Jobs</SelectItem>
+            <SelectItem value="failed">Failed Jobs</SelectItem>
+            <SelectItem value="delayed">Delayed Jobs</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      {filteredJobs.map((job) => (
+        <HistoryVideoCard key={job.id} {...job} showDetails />
       ))}
     </div>
   );

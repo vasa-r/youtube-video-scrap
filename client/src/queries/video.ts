@@ -6,7 +6,7 @@ export const useAllJobs = () => {
   return useQuery<JobStatus[]>({
     queryKey: ["jobs"],
     queryFn: videoApi.getAllJobs,
-    // refetchInterval: 5000, // just polling for 5 sec to check new jobs
+    refetchInterval: 5000, // just polling for 5 sec to check new jobs
   });
 };
 
