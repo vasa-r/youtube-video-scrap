@@ -14,6 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import ResendEmailField from "@/components/auth/resend-email-field";
 
 const VerifyEmail = () => {
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +53,7 @@ const VerifyEmail = () => {
 
   return (
     <div className="min-h-svh w-screen bg-green-50 px-5 md:px-[30%] flex items-center justify-center">
-      <Card className="border border-green-500 bg-transparent w-full max-w-md rounded-sm shadow-md">
+      <Card className="w-full max-w-md bg-transparent border border-green-500 rounded-sm shadow-md">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             Email Verification
@@ -67,23 +68,26 @@ const VerifyEmail = () => {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex justify-center items-center gap-2 text-muted-foreground">
-              <Loader2 className="animate-spin h-5 w-5 text-green-500" />
+            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+              <Loader2 className="w-5 h-5 text-green-500 animate-spin" />
               <span>Checking token...</span>
             </div>
           ) : error ? (
-            <p className="text-sm text-red-500 text-center">{error}</p>
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-sm text-center text-red-500">{error}</p>
+              <ResendEmailField />
+            </div>
           ) : (
-            <p className="text-green-600 text-center font-medium">
+            <p className="font-medium text-center text-green-600">
               Your email is now verified. You can now sign in to your account.
             </p>
           )}
         </CardContent>
         <CardFooter className="flex justify-center text-sm text-muted-foreground">
-          {!loading && (
+          {!loading && !error && (
             <p>
               Redirecting to sign-in page...
-              <span className="animate-pulse ml-1">⏳</span>
+              <span className="ml-1 animate-pulse">⏳</span>
             </p>
           )}
         </CardFooter>

@@ -1,6 +1,6 @@
 import { authApi } from "@/api/auth";
 import { useAuth } from "@/context/auth-context";
-import { LoginType, RegisterType } from "@/types/types";
+import { LoginType, RegisterType, ResendEmailType } from "@/types/types";
 import { useMutation } from "@tanstack/react-query";
 
 export const useLogin = () => {
@@ -22,5 +22,12 @@ export const useRegister = () => {
     onSuccess: (data) => {
       login(data.token, data.user);
     },
+  });
+};
+
+export const useResendEmailVerification = () => {
+  return useMutation({
+    mutationFn: (data: ResendEmailType) =>
+      authApi.resendVerificationEmail(data),
   });
 };

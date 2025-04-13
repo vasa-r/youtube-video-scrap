@@ -1,4 +1,4 @@
-import { LoginType, RegisterType } from "@/types/types";
+import { LoginType, RegisterType, ResendEmailType } from "@/types/types";
 import { apiClient } from "./api-client";
 
 export const authApi = {
@@ -17,5 +17,14 @@ export const authApi = {
     const response = await apiClient.get("/auth/me");
 
     return response.data;
+  },
+
+  resendVerificationEmail: async (data: ResendEmailType) => {
+    const response = await apiClient.post(
+      "/auth/resend-verification-email",
+      data
+    );
+
+    return response.data.data;
   },
 };
