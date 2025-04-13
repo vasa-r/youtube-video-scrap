@@ -38,3 +38,7 @@ export const urlSchema = z.object({
       }
     ),
 });
+
+export const resendEmailSchema = z.object({
+  email: z.string().email({ message: "Please enter valid email address" }),
+});

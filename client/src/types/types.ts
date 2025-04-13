@@ -1,4 +1,9 @@
-import { registerSchema, loginSchema, urlSchema } from "@/schema/zod-schema";
+import {
+  registerSchema,
+  loginSchema,
+  urlSchema,
+  resendEmailSchema,
+} from "@/schema/zod-schema";
 import { z } from "zod";
 export interface User {
   id: string;
@@ -13,6 +18,7 @@ export interface User {
 export type LoginType = z.infer<typeof loginSchema>;
 export type RegisterType = z.infer<typeof registerSchema>;
 export type URLType = z.infer<typeof urlSchema>;
+export type ResendEmailType = z.infer<typeof resendEmailSchema>;
 
 export interface VideoInfo {
   title: string;
@@ -49,7 +55,7 @@ export interface VideoAnalysis {
   keyPoints: string[];
   sentiment: string;
   topics: string[];
-  suggestedTags: string[];
+  tags: string[];
   createdAt: string;
 }
 

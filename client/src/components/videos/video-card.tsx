@@ -22,11 +22,11 @@ const VideoCard = ({
   duration,
   createdAt,
   author,
+  id,
 }: Video) => {
-  console.log({ createdAt });
   return (
     <div className="flex flex-col gap-1.5 md:gap-0 items-stretch justify-between w-full p-2 py-4 overflow-hidden border border-green-500 rounded-md md:flex-row h-fit bg-gradient-to-r from-green-100/50 to-green-50/50">
-      <div className="relative w-full md:w-[150px] h-[150px] md:h-[100px] rounded-sm group shrink-0">
+      <div className="relative w-full md:w-[150px] h-[150px] md:h-[100px] rounded-sm group shrink-0 self-center">
         <Image
           src={thumbnail}
           alt={title}
@@ -78,10 +78,13 @@ const VideoCard = ({
           <p className="text-xs sm:text-sm">View video</p>
         </Link>
 
-        <div className="flex items-center gap-1 p-1 border rounded-md cursor-pointer w-fit hover:shadow-sm md:px-2">
+        <Link
+          href={`/dashboard/videos/${id}`}
+          className="flex items-center gap-1 p-1 border rounded-md cursor-pointer w-fit hover:shadow-sm md:px-2"
+        >
           <Eye className="text-green-500 size-5" />
           <p className="text-xs sm:text-sm">See Insights</p>
-        </div>
+        </Link>
       </div>
     </div>
   );
