@@ -58,6 +58,7 @@ export interface Video {
   url: string;
   title: string;
   description: string;
+  thumbnail: string;
   duration: number;
   author: string;
   status: string;
@@ -105,4 +106,19 @@ export interface JobStatus {
   failedReason?: string | null;
   videoStatus?: VideoStatus | null;
   final?: boolean;
+}
+
+export interface VideoType {
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+  description: string;
+  duration: number;
+  id: string;
+  status: string;
+  thumbnail: string;
+  title: string;
+  transcription: Transcription;
+  analysis: Analytics;
+  url: string;
 }

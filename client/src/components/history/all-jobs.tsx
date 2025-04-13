@@ -70,7 +70,11 @@ const AllJobs = () => {
         </Select>
       </div>
       {filteredJobs.map((job) => (
-        <HistoryVideoCard key={job.id} {...job} showDetails />
+        <HistoryVideoCard
+          key={job.id}
+          {...job}
+          showDetails={job.state === "completed"}
+        />
       ))}
     </div>
   );

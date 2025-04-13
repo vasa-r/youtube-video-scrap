@@ -66,7 +66,7 @@ const HistoryVideoCard = ({
           sizes="(max-width: 768px) 100px, 150px"
           className="rounded-sm"
         />
-        <div className="absolute inset-0 hover:bg-black/20 rounded-sm transition-all duration-300 center opacity-0 group-hover:opacity-100">
+        <div className="absolute inset-0 transition-all duration-300 rounded-sm opacity-0 hover:bg-black/20 center group-hover:opacity-100">
           <CirclePlay className="text-white size-5" />
         </div>
         <div className="absolute size-5 rounded-full bottom-1.5 right-1.5 center">
@@ -75,8 +75,8 @@ const HistoryVideoCard = ({
           />
         </div>
       </div>
-      <div className="flex flex-col space-y-0.5 md:space-y-2">
-        <div className="flex relative">
+      <div className="flex flex-col space-y-0.5 md:space-y-2 flex-1">
+        <div className="relative flex">
           <div className="space-y-0.5 md:space-y-2 flex flex-col">
             <h1
               className={cn(
@@ -86,7 +86,7 @@ const HistoryVideoCard = ({
               {videoInfo.title}
             </h1>
             {videoInfo.description && (
-              <p className="text-sm md:text-base font-medium truncate max-w-[180px] sm:max-w-[300px] md:max-w-[70%]">
+              <p className="text-sm md:text-base font-medium truncate max-w-[180px] sm:max-w-[300px]">
                 {videoInfo.description}
               </p>
             )}
@@ -95,7 +95,7 @@ const HistoryVideoCard = ({
             children={stateMessage[state as keyof typeof stateMessage]}
             className={cn(
               stateBadgeStyle[state as keyof typeof stateBadgeStyle],
-              "h-fit rounded-full absolute right-16 top-3.5 hidden md:block"
+              "h-fit rounded-full absolute right-1 top-3.5 hidden md:block"
             )}
           />
         </div>
@@ -106,7 +106,7 @@ const HistoryVideoCard = ({
               className={cn("mt-1 md:mt-0 md:w-[80%]")}
               state={state}
             />
-            <p className="text-xs md:text-sm font-medium">{progress}/100</p>
+            <p className="text-xs font-medium md:text-sm">{progress}/100</p>
           </div>
         )}
         {state === "completed" && (
@@ -114,7 +114,10 @@ const HistoryVideoCard = ({
             <div className="flex items-center gap-1">
               <Timer className="size-4" />
               <p className="text-xs md:text-sm">
-                {Math.ceil(videoInfo.duration / 60)} minutes
+                {Math.ceil(videoInfo.duration / 60)}{" "}
+                {Math.ceil(videoInfo.duration / 60) === 1
+                  ? "minute"
+                  : "minutes"}
               </p>
             </div>
             <div className="flex items-center gap-1">
@@ -124,19 +127,21 @@ const HistoryVideoCard = ({
           </div>
         )}
       </div>
-      <div className="flex flex-col justify-between items-center">
+      <div className="flex flex-col items-center justify-between">
         <Link
           href={videoInfo.videoUrl}
           target="_blank"
-          className="flex items-center gap-1 border p-1 md:p-2 rounded-lg shadow-sm cursor-pointer"
+          className="flex items-center gap-1 p-1 border rounded-lg cursor-pointer hover:shadow-sm md:p-2"
         >
-          <Youtube className="size-5" />
-          <p className="text-xs sm:text-sm hidden md:block">View video</p>
+          <Youtube className="text-red-500 size-5" />
+          <p className="hidden text-xs sm:text-sm md:block">View video</p>
         </Link>
-        <div className="flex items-center gap-1 border p-1 md:p-2 rounded-lg shadow-sm cursor-pointer">
-          <Eye className="size-5" />
-          <p className="text-xs sm:text-sm hidden md:block">View Details</p>
-        </div>
+        {showDetails && (
+          <div className="flex items-center gap-1 p-1 border rounded-lg cursor-pointer hover:shadow-sm md:p-2">
+            <Eye className="text-green-500 size-5" />
+            <p className="hidden text-xs sm:text-sm md:block">View Details</p>
+          </div>
+        )}
       </div>
     </Card>
   );
