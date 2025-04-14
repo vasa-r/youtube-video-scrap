@@ -12,6 +12,8 @@ import { Tabs, TabsList, TabsContent, TabsTrigger } from "../ui/tabs";
 import Transcription from "./transcription";
 import AiAnalysis from "./ai-analysis";
 import VideoDetails from "./video-details";
+import { Skeleton } from "../ui/skeleton";
+import NoDataFallback from "../main/nodata-fallback";
 
 interface SingleVideoProp {
   videoId: string;
@@ -25,12 +27,23 @@ const SingleVideo = ({ videoId }: SingleVideoProp) => {
     return <ErrorView label="Failed to load video info" refetch={refetch} />;
   }
 
-  if (isLoading && !video) {
-    return <p>loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex flex-col h-full space-y-3">
+        <Skeleton className="h-9 w-[105px]" />
+        <Skeleton className="h-[102px] w-full" />
+        <Skeleton className="h-9 w-[406px]" />
+        <Skeleton className="flex-1 w-full" />
+      </div>
+    );
   }
 
   if (!video) {
-    return <p>video not found</p>;
+    return (
+      <div className="center flex-1">
+        <NoDataFallback label="No videos yet" />
+      </div>
+    );
   }
 
   return (
