@@ -19,7 +19,10 @@ export class AuthService {
     const isUserExists = await this.userRepo.findOne({ where: { email } });
 
     if (isUserExists) {
-      throw new AppError(statusCode.CONFLICT, "User already exists");
+      throw new AppError(
+        statusCode.CONFLICT,
+        "User already exists. Please login."
+      );
     }
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
@@ -40,7 +43,15 @@ export class AuthService {
 
     const token = this.generateToken(user);
 
-    return { user, token };
+    const transformedUser = {
+      id: user.id,
+      email: user.email,
+      userName: user.userName,
+      isEmailVerified: user.isEmailVerified,
+      lastLogin: user.lastLogin,
+    };
+
+    return { user: transformedUser, token };
   }
 
   // login user
@@ -48,13 +59,23 @@ export class AuthService {
     const user = await this.userRepo.findOne({ where: { email } });
 
     if (!user) {
-      throw new AppError(statusCode.NOT_FOUND, "No user found. Try to Sign in");
+      throw new AppError(
+        statusCode.NOT_FOUND,
+        "No user found. Try to Sign Up."
+      );
     }
 
     const isPasswordValid = await user.comparePassword(password);
 
     if (!isPasswordValid) {
-      throw new AppError(statusCode.UNAUTHORIZED, "Incorrect Password");
+      throw new AppError(statusCode.UNAUTHORIZED, "Incorrect Password.");
+    }
+
+    if (!user.isEmailVerified) {
+      throw new AppError(
+        statusCode.FORBIDDEN,
+        "Please verify your email. Check mail."
+      );
     }
 
     user.lastLogin = new Date();
@@ -62,7 +83,15 @@ export class AuthService {
 
     const token = this.generateToken(user);
 
-    return { user, token };
+    const transformedUser = {
+      id: user.id,
+      email: user.email,
+      userName: user.userName,
+      isEmailVerified: user.isEmailVerified,
+      lastLogin: user.lastLogin,
+    };
+
+    return { user: transformedUser, token };
   }
 
   static async verifyEmail(token: string) {
@@ -71,7 +100,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new AppError(statusCode.NOT_FOUND, "Invalid verification token");
+      throw new AppError(statusCode.NOT_FOUND, "Invalid verification token.");
     }
 
     if (
@@ -80,7 +109,7 @@ export class AuthService {
     ) {
       throw new AppError(
         statusCode.NOT_ACCEPTABLE,
-        "Email verification token expired"
+        "Email verification token expired."
       );
     }
 
@@ -100,11 +129,11 @@ export class AuthService {
     const user = await this.userRepo.findOne({ where: { email } });
 
     if (!user) {
-      throw new AppError(statusCode.NOT_FOUND, "User not found");
+      throw new AppError(statusCode.NOT_FOUND, "User not found.");
     }
 
     if (user.isEmailVerified) {
-      throw new AppError(statusCode.CONFLICT, "Email already verified");
+      throw new AppError(statusCode.CONFLICT, "Email already verified.");
     }
 
     const verificationToken = crypto.randomBytes(32).toString("hex");

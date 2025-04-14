@@ -1,12 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/auth-services";
-import {
-  JwtPayloadWithUser,
-  RegisterResponse,
-  statusCode,
-} from "../types/types";
+import { JwtPayloadWithUser, statusCode } from "../types/types";
 import { successRes } from "../utils/response-format";
-import { User } from "../entities/user-entity";
+
 import { AppError } from "../utils/error";
 
 export class AuthController {
@@ -14,11 +10,7 @@ export class AuthController {
     try {
       const { userName, email, password } = req.body;
 
-      const result: RegisterResponse = await AuthService.register(
-        userName,
-        email,
-        password
-      );
+      const result = await AuthService.register(userName, email, password);
 
       res
         .status(statusCode.CREATED)
@@ -32,7 +24,7 @@ export class AuthController {
     try {
       const { email, password } = req.body;
 
-      const result: RegisterResponse = await AuthService.login(email, password);
+      const result = await AuthService.login(email, password);
 
       res
         .status(statusCode.ACCEPTED)

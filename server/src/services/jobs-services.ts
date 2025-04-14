@@ -304,17 +304,19 @@ export class JobService {
     const jobDetails = await Promise.all(
       userJobs.map(async (job) => {
         const state = await job.getState();
+        const progress = await job.progress();
 
         return {
           id: job.id,
           state,
+          progress,
           data: job.data,
           timestamp: job.timestamp,
           processedOn: job.processedOn,
           finishedOn: job.finishedOn,
           attemptsMade: job.attemptsMade,
           result: job.returnvalue,
-          failedReason: job.failedReason,
+          failedReason: job.failedReason ? job.failedReason : null,
           videoStatus: job.data?.url
             ? await this.getVideoStatus(job.data.url)
             : null,

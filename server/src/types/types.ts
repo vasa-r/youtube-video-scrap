@@ -42,6 +42,13 @@ export interface VideoInfo {
   audioPath?: string;
 }
 
+export interface VideoStatus {
+  id: number;
+  status: string;
+  hasTranscription: boolean;
+  hasAnalysis: boolean;
+}
+
 export type YoutubeDLOutput = {
   title: string;
   description?: string;
@@ -74,4 +81,33 @@ export interface AiAnalysis {
   sentiment: "positive" | "negative" | "neutral";
   topics: string[];
   tags: string[];
+}
+
+export interface JobStatus {
+  id: string;
+  state: "waiting" | "active" | "completed" | "failed" | "delayed";
+  progress: number;
+  result?: {
+    videoInfo?: VideoInfo;
+    transcription?: {
+      text: string;
+      segments: Array<{
+        start: number;
+        end: number;
+        text: string;
+      }>;
+    };
+    analysis?: {
+      summary: string;
+      keyPoints: string[];
+      topics: string[];
+      suggestedTags: string[];
+    };
+    error?: string;
+    final?: boolean;
+  };
+  failedReason?: string;
+  attemptsMade: number;
+  videoStatus?: VideoStatus;
+  final: boolean;
 }
