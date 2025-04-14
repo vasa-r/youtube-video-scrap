@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Codystar } from "next/font/google";
+import { Poppins, Codystar, Yanone_Kaffeesatz } from "next/font/google";
 import "@/styles/globals.css";
 import { ClientProviders } from "@/context/client-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -9,6 +9,13 @@ const poppinsFont = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: ["100", "200", "400", "500", "600", "800"],
+});
+
+const yanoneFont = Yanone_Kaffeesatz({
+  variable: "--font-yanone",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["200", "400", "500", "600", "700"],
 });
 
 const codystartFont = Codystar({
@@ -31,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppinsFont.variable} ${codystartFont.variable}  antialiased`}
+        className={`${poppinsFont.variable} ${codystartFont.variable} ${yanoneFont.variable}  antialiased`}
       >
         <ClientProviders>{children}</ClientProviders>
         <Toaster richColors />

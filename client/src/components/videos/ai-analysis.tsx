@@ -58,7 +58,7 @@ const AiAnalysis = ({ analysis }: AiAnalysisProp) => {
         </div>
       </div>
       <Separator />
-      <div className="flex flex-col justify-between gap-2 sm:flex-row sm:gap-1">
+      <div className="flex flex-col justify-between gap-2 lg:flex-row sm:gap-1">
         <div className="flex flex-wrap gap-1 max-w-[70%]">
           {analysis?.tags.map((tag) => (
             <p key={tag}>{tag}</p>

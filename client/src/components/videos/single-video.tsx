@@ -11,6 +11,7 @@ import { truncate } from "@/lib/utils";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "../ui/tabs";
 import Transcription from "./transcription";
 import AiAnalysis from "./ai-analysis";
+import VideoDetails from "./video-details";
 
 interface SingleVideoProp {
   videoId: string;
@@ -68,7 +69,7 @@ const SingleVideo = ({ videoId }: SingleVideoProp) => {
       </div>
 
       <div className="flex-1 w-full">
-        <Tabs defaultValue="account" className="w-full h-full">
+        <Tabs defaultValue="transcription" className="w-full h-full">
           <TabsList>
             <TabsTrigger value="transcription">
               <Notebook /> <p className="hidden sm:block">Transcription</p>{" "}
@@ -95,6 +96,9 @@ const SingleVideo = ({ videoId }: SingleVideoProp) => {
           </TabsContent>
           <TabsContent value="analysis">
             <AiAnalysis analysis={video.analysis} />
+          </TabsContent>
+          <TabsContent value="info">
+            <VideoDetails {...video} />
           </TabsContent>
         </Tabs>
       </div>
